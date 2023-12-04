@@ -10,7 +10,7 @@ fun main() {
         val symbolsRegex = Regex("[!@#$%^&*()+\\-=_/<>,`~|]")
 
 
-        val symbolCoordinates = mutableListOf<Pair<Int,Int>>()
+        val symbolCoordinates = mutableListOf<Pair<Int, Int>>()
         val partList = mutableListOf<Part>()
 
         // Get all symbols and parts
@@ -39,15 +39,18 @@ fun main() {
 
                 }
 
-                partList.add(Part(
-                    value = part.value.toInt(),
-                    border = border
-                ))
+                partList.add(
+                    Part(
+                        value = part.value.toInt(),
+                        border = border
+                    )
+                )
 
             }
 
         }
 
+        // Filter Any part whose border doesn't contain a symbol
         val validParts = partList.filter { it.border.any { symbolCoordinates.contains(it) } }
 
         return validParts.sumOf { it.value }
@@ -59,7 +62,7 @@ fun main() {
         val symbolsRegex = Regex("\\*")
 
 
-        val symbolCoordinates = mutableListOf<Pair<Int,Int>>()
+        val symbolCoordinates = mutableListOf<Pair<Int, Int>>()
         val partList = mutableListOf<Part>()
 
         var totalGearRatio = 0
@@ -75,7 +78,7 @@ fun main() {
                 }
             )
 
-            partMatches.forEach {part ->
+            partMatches.forEach { part ->
 
                 // Create the border of the part
                 val border = mutableListOf<Pair<Int, Int>>()
@@ -90,20 +93,25 @@ fun main() {
 
                 }
 
-                partList.add(Part(
-                    value = part.value.toInt(),
-                    border = border
-                ))
+                partList.add(
+                    Part(
+                        value = part.value.toInt(),
+                        border = border
+                    )
+                )
 
             }
         }
 
+        /* For every symbol filter the parts whose border contain the current symbol, if the list is == 2
+        * then calculate the gear ratio */
         symbolCoordinates.forEach { symbolCoordinate ->
-            val validParts = partList.filter { it.border.any{ it == symbolCoordinate } }
+            val validParts = partList.filter { it.border.contains(symbolCoordinate) }
 
-            if(validParts.size == 2){
+            if (validParts.size == 2) {
                 totalGearRatio += validParts[0].value * validParts[1].value
             }
+
         }
 
         return totalGearRatio
